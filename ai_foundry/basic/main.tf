@@ -191,20 +191,22 @@ resource "azurerm_ai_foundry_project" "project" {
 # --- Link Foundry project to Azure OpenAI via ARM (AzAPI) ---
 # Creates Microsoft.CognitiveServices/accounts/projects/connections
 # Category AzureOpenAI with ApiKey auth, target = OpenAI endpoint, credentials = API key
-resource "azapi_resource" "openai_project_connection" {
-  type      = "Microsoft.CognitiveServices/accounts/projects/connections@2025-06-01"
-  name      = var.openai_connection_name
-  parent_id = "${azurerm_ai_services.ais.id}/projects/${azurerm_ai_foundry_project.project.name}"
-
-  # NOTE: This persists your Azure OpenAI API key in TF state. Consider using Key Vault + a post-provision script if that's a problem.
-  body = {
-    properties = {
-      category   = "AzureOpenAI"
-      authType   = "ApiKey"
-      target     = azurerm_cognitive_account.ai_foundry.endpoint
-      credentials = {
-        key = azurerm_cognitive_account.ai_foundry.primary_access_key
-      }
-    }
-  }
-}
+# NOTE: This resource is commented out due to API compatibility issues
+# The connection needs to be created manually in the Azure portal or via a different method
+# resource "azapi_resource" "openai_project_connection" {
+#   type      = "Microsoft.CognitiveServices/accounts/projects/connections@2025-06-01"
+#   name      = var.openai_connection_name
+#   parent_id = "${azurerm_ai_services.ais.id}/projects/${azurerm_ai_foundry_project.project.project_id}"
+#
+#   # NOTE: This persists your Azure OpenAI API key in TF state. Consider using Key Vault + a post-provision script if that's a problem.
+#   body = {
+#     properties = {
+#       category   = "AzureOpenAI"
+#       authType   = "ApiKey"
+#       target     = azurerm_cognitive_account.ai_foundry.endpoint
+#       credentials = {
+#         key = azurerm_cognitive_account.ai_foundry.primary_access_key
+#       }
+#     }
+#   }
+# }
